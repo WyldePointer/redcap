@@ -1,5 +1,5 @@
 # redcap
-Lightweight cross-platform packet counter based on `libpcap` and using the `redis` for storing the statistics.
+Lightweight cross-platform packet counter based on `libpcap` and using Redis for storing the statistics.
 
 #### Usage
 `./redcap_count <device> <filter> <count> <redis_key> <redis_incrby_interval> [redis_bgsave_interval]`
@@ -25,8 +25,8 @@ Lightweight cross-platform packet counter based on `libpcap` and using the `redi
  - Filtering the `ICMP Echo Request`(`ping`) packets destinated for `8.8.8.8`.
  - Capturing 10 packets.
  - Storing as `my_key` in Redis.
- - Updating redis after 5 packets.
- - Store the redis data on disk after 10 packets. (optional)
+ - Updating Redis after 5 packets.
+ - Store the Redis data on disk after 10 packets. (optional)
 
  #### TODO
  - `redcap_bytes.c`
