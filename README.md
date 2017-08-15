@@ -23,7 +23,7 @@ Lightweight cross-platform packet counter based on `libpcap` and using Redis for
 
  - Listening on `eth0`.
  - Filtering the `ICMP Echo Request`(`ping`) packets destinated for `8.8.8.8`.
- - Capturing 10 packets.
+ - Capturing 100 packets.
  - Storing as `my_key` in Redis.
  - Updating Redis after 5 packets.
  - Store the Redis data on disk after 10 packets. (optional)
