@@ -19,7 +19,7 @@ Lightweight cross-platform packet counter based on `libpcap` and using Redis for
 `% cc -o redcap_count redcap_count.c -lpcap -lhiredis -pedantic -Wall`
 
 #### Example
-`# ./redcap_count eth0 "icmp[icmptype] == icmp-echo and dst host 8.8.8.8" 10 my_key 5 10`
+`# ./redcap_count eth0 "icmp[icmptype] == icmp-echo and dst host 8.8.8.8" 100 my_key 5 10`
 
  - Listening on `eth0`.
  - Filtering the `ICMP Echo Request`(`ping`) packets destinated for `8.8.8.8`.
