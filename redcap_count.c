@@ -32,7 +32,6 @@
 
 /* Arguments for redisConnect() */
 redisContext *redis;
-redisReply *redis_reply;
 struct timeval redis_timeout = { 1, 0 };
 
 /* Supplied via command-line arguments */
@@ -56,12 +55,14 @@ redcap_got_packet(
 
   if (currently_not_incremented == redis_incrby_interval){
 
-    redis_reply = redisCommand(redis,"INCRBY %s %d",
-                    redis_key_name, currently_not_incremented);
-
-    freeReplyObject(redis_reply);
+    redisCommand(
+      redis,
+      "INCRBY %s %d",
+      redis_key_name, currently_not_incremented
+    );
 
     currently_not_incremented = 0;
+
   }
 
   if (redis_bgsave_interval > 0) {
@@ -70,9 +71,7 @@ redcap_got_packet(
 
     if (current_unsaved_packets == redis_bgsave_interval){
 
-      redis_reply = redisCommand(redis,"BGSAVE");
-
-      freeReplyObject(redis_reply);
+      redisCommand(redis,"BGSAVE");
 
       current_unsaved_packets = 0;
 
