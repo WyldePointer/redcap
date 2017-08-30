@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
   }
 
   printf(
-    "Expression: %s\n Redis key: %s\n INCRBY every %d packets.\n",
+    "Expression: %s\nRedis key: %s\nINCRBY every %d packets.\n",
     argv[2], argv[4], redis_incrby_interval
   );
 
