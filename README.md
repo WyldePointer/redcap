@@ -29,7 +29,7 @@ Lightweight cross-platform packet counter based on `libpcap` and using Redis for
  - Store the Redis data on disk after 10 packets. (optional)
 
  #### TODO
- - `redcap_bytes.c`
+ - Option for enabling an OS-specific library? (e,g. `PF_RING` on Linux)
  - `verbose` option.
  - `<redis_index_id>`
  - Connecting to Redis via socket. (optional)
