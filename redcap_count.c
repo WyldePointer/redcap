@@ -134,14 +134,17 @@ int main(int argc, char *argv[]) {
 
     if (redis) {
 
-      printf("Redis connection error: %s. (redis-server is running?)\n",
-        redis->errstr);
+      fprintf(
+        stderr,
+        "Redis connection error: %s. (redis-server is running?)\n",
+        redis->errstr
+      );
 
       redisFree(redis);
 
     } else {
 
-      printf("C redis error: can't allocate redis context.\n");
+      fprintf(stderr, "C redis error: can't allocate redis context.\n");
 
     }
 
