@@ -4,6 +4,7 @@
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
+ *
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
@@ -53,7 +54,7 @@ redcap_got_packet(
 
   currently_not_incremented++;
 
-  if (currently_not_incremented == redis_incrby_interval){
+  if (currently_not_incremented == redis_incrby_interval) {
 
     redisCommand(
       redis,
@@ -69,7 +70,7 @@ redcap_got_packet(
 
     current_unsaved_packets++;
 
-    if (current_unsaved_packets == redis_bgsave_interval){
+    if (current_unsaved_packets == redis_bgsave_interval) {
 
       redisCommand(redis,"BGSAVE");
 
@@ -81,7 +82,7 @@ redcap_got_packet(
 
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
 
   pcap_t *handle;                /* Instance of pcap */
   char errbuf[PCAP_ERRBUF_SIZE]; /* Error string for pcap */
@@ -90,11 +91,14 @@ int main(int argc, char *argv[]){
   bpf_u_int32 netmask;           /* Netmask of the device. (pcap) */
 
 
-  if ( argc < 6 ){
+  if ( argc < 6 ) {
 
-    fprintf(stderr, "Usage: %s <device> <filter_expression> <count>"
-      " <redis_key> <redis_incrby_interval>"
-      " [redis_bgsave_interval]\n", argv[0]);
+    fprintf(
+      stderr,
+      "Usage: %s <device> <filter_expression> <count>"
+        " <redis_key> <redis_incrby_interval> [redis_bgsave_interval]\n",
+      argv[0]
+    );
 
     return -1;
   }
@@ -105,7 +109,7 @@ int main(int argc, char *argv[]){
 
   redis_incrby_interval = atoi(argv[5]);
 
-  if ( argc > 6){
+  if ( argc > 6) {
     redis_bgsave_interval = atoi(argv[6]);
   }
 
@@ -115,10 +119,12 @@ int main(int argc, char *argv[]){
   )
   {
 
-    fprintf(stderr, "[WARNING] supplied packet_count(%d)"
-      "is smaller than incrby interval(%d)."
-      " (Redis won't be updated)\n",
-      total_packets_to_capture, redis_incrby_interval);
+    fprintf(
+      stderr,
+      "[WARNING] supplied packet_count(%d)"
+        " is smaller than incrby interval(%d). (Redis won't be updated)\n",
+      total_packets_to_capture, redis_incrby_interval
+    );
 
   }
 
@@ -126,18 +132,18 @@ int main(int argc, char *argv[]){
 
   if (redis == NULL || redis->err) {
 
-      if (redis) {
+    if (redis) {
 
-          printf("Redis connection error: %s. (redis-server is running?)\n",
-            redis->errstr);
+      printf("Redis connection error: %s. (redis-server is running?)\n",
+        redis->errstr);
 
-          redisFree(redis);
+      redisFree(redis);
 
-      } else {
+    } else {
 
-          printf("C redis error: can't allocate redis context.\n");
+      printf("C redis error: can't allocate redis context.\n");
 
-      }
+    }
 
     return -2;
   }
@@ -147,7 +153,6 @@ int main(int argc, char *argv[]){
     fprintf(stderr, "Can't get netmask for device %s\n", argv[1]);
 
     ip = 0;
-
     netmask = 0;
 
   }
@@ -161,32 +166,34 @@ int main(int argc, char *argv[]){
 
   if (pcap_compile(handle, &filter, argv[2], 0, ip) == -1) {
 
-    fprintf(stderr, "%s in \"%s\".\n",
-      pcap_geterr(handle), argv[2]);
+    fprintf(stderr, "%s in \"%s\".\n", pcap_geterr(handle), argv[2]);
 
     return(-4);
   }
 
   if (pcap_setfilter(handle, &filter) == -1) {
 
-    fprintf(stderr, "Filter \"%s\" set failed: %s\n",
-      argv[2], pcap_geterr(handle));
+    fprintf(
+      stderr,
+      "Filter \"%s\" set failed: %s\n",
+      argv[2], pcap_geterr(handle)
+    );
 
     return(-5);
   }
 
   printf("Listening on: %s\n", argv[1]);
 
-  if (total_packets_to_capture > 0){
+  if (total_packets_to_capture > 0) {
     printf("Packets to capture: %d\n", total_packets_to_capture);
   }
 
-  printf("Expression: %s\n"
-    "Redis key: %s\n"
-    "INCRBY every %d packets.\n",
-    argv[2], argv[4], redis_incrby_interval);
+  printf(
+    "Expression: %s\n Redis key: %s\n INCRBY every %d packets.\n",
+    argv[2], argv[4], redis_incrby_interval
+  );
 
-  if (redis_bgsave_interval == 0){
+  if (redis_bgsave_interval == 0) {
 
     printf("BGSAVE is disabled.\n");
 
